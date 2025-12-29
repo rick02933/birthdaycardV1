@@ -3,27 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- V3.4: 防止搜尋引擎索引此頁面 -->
+    <meta name="robots" content="noindex, nofollow">
     <title>Asiapac 1、2月壽星慶生會</title>
-    <!-- 引入 Tailwind CSS (快速美化樣式) -->
+    <!-- 引入 Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- 引入 Google Fonts (質感字體) -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Pacifico&display=swap" rel="stylesheet">
-    <!-- 引入 Font Awesome (圖標) -->
+    <!-- 引入 Google Fonts (新增 Patrick Hand 字體) -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Pacifico&family=Patrick+Hand&display=swap" rel="stylesheet">
+    <!-- 引入 Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- 引入 Canvas Confetti (拉炮特效) -->
+    <!-- 引入 Canvas Confetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     
     <style>
         body {
             font-family: 'Noto Sans TC', sans-serif;
-            /* V3.0: 改為冬日冰雪漸層 (冰藍色 -> 淺紫色) */
+            /* V3.0: 冬日冰雪漸層 */
             background: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
             overflow-x: hidden;
             color: #2d3748;
+
+            /* ========================================= */
+            /* V3.6 Security: 禁止選取文字 (CSS部分)      */
+            /* ========================================= */
+            -webkit-user-select: none; /* Safari */
+            -moz-user-select: none;    /* Firefox */
+            -ms-user-select: none;     /* IE 10+ */
+            user-select: none;         /* Standard syntax */
         }
 
+        /* 標題用的華麗草寫 */
         .font-handwriting {
             font-family: 'Pacifico', cursive;
+        }
+
+        /* V3.5 優化：提示文字用的清晰手寫字體 */
+        .font-clue {
+            font-family: 'Patrick Hand', cursive;
         }
 
         /* 翻轉卡片的核心 CSS */
@@ -52,7 +68,7 @@
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
             border-radius: 1rem;
-            box-shadow: 0 10px 25px -5px rgba(31, 38, 135, 0.37); /* 調整陰影顏色更冷 */
+            box-shadow: 0 10px 25px -5px rgba(31, 38, 135, 0.37);
             overflow: hidden;
         }
 
@@ -63,7 +79,6 @@
         }
 
         .flip-card-back {
-            /* V3.0: 背面改為極光般的冷色漸層 */
             background: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
             color: #333;
             transform: rotateY(180deg);
@@ -71,10 +86,10 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            border: 4px solid #a1c4fd; /* 冰藍色邊框 */
+            border: 4px solid #a1c4fd;
         }
 
-        /* V3.0: 背景漂浮裝飾 - 飄雪效果 */
+        /* 背景漂浮裝飾 */
         .floating-bg {
             position: fixed;
             top: 0;
@@ -88,34 +103,36 @@
         .floating-item {
             position: absolute;
             color: rgba(255, 255, 255, 0.6);
-            animation: floatDown 15s linear infinite; /* 改為往下飄落 */
+            animation: floatDown 15s linear infinite;
         }
-        /* 雪花通常是往下飄 */
         @keyframes floatDown {
             0% { transform: translateY(-10vh) rotate(0deg) translateX(0); opacity: 0; }
             10% { opacity: 0.8; }
             100% { transform: translateY(110vh) rotate(360deg) translateX(20px); opacity: 0; }
         }
 
-        /* 標題動畫 */
-        @keyframes shimmer {
-            0% { background-position: -100% 0; }
-            100% { background-position: 100% 0; }
-        }
-
-        /* V3.2: 木頭質感掛牌樣式 */
+        /* 木頭質感掛牌樣式 */
         .wood-tag {
-            background-color: #e6c9a8; /* 淺木頭色 */
-            background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.3) 0px, transparent 1px, transparent 10px); /* 簡單木紋 */
+            background-color: #e6c9a8;
+            background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.3) 0px, transparent 1px, transparent 10px);
             border: 2px solid #d4a77a;
             box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
         }
-        /* [已移除] 模擬掛繩孔的偽元素 */
+
+        /* V3.5: 錯誤提示的搖晃動畫 */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        .shake-animation {
+            animation: shake 0.3s ease-in-out;
+        }
     </style>
 </head>
 <body class="min-h-screen py-10 px-4">
 
-    <!-- V3.0: 背景漂浮裝飾 (雪花與星星) -->
+    <!-- 背景漂浮裝飾 -->
     <div class="floating-bg">
         <i class="fas fa-snowflake text-4xl floating-item" style="left: 10%; animation-duration: 12s; animation-delay: 0s;"></i>
         <i class="fas fa-snowflake text-2xl floating-item" style="left: 25%; animation-duration: 18s; animation-delay: 5s;"></i>
@@ -150,15 +167,50 @@
         <button onclick="resetAllCards()" class="bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold py-2 px-6 rounded-full transition duration-300 border border-slate-300">
             <i class="fas fa-redo-alt mr-2"></i> 再次挑戰？
         </button>
-        <!-- V3.0: 按鈕改為冰藍色漸層 -->
         <button onclick="celebrateNow()" class="bg-gradient-to-r from-sky-400 to-indigo-500 hover:from-sky-500 hover:to-indigo-600 text-white font-bold py-2 px-6 rounded-full shadow-lg transform hover:scale-105 transition duration-300 ring-2 ring-offset-2 ring-sky-200">
             <i class="fas fa-glass-cheers mr-2"></i> 一起慶祝！
         </button>
     </div>
 
+    <!-- V3.5: 猜謎互動視窗 (Modal) -->
+    <div id="guess-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] hidden flex justify-center items-center px-4">
+        <div class="bg-white rounded-2xl p-6 md:p-8 max-w-sm w-full shadow-2xl border-4 border-sky-200 relative transform transition-all scale-100">
+            <!-- 裝飾 -->
+            <div class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-sky-500 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg border-2 border-white text-xl">
+                <i class="fas fa-question"></i>
+            </div>
+            
+            <h3 class="text-2xl font-bold text-slate-700 mt-4 mb-2 text-center">你知道我是誰嗎？</h3>
+            <p class="text-slate-500 text-sm text-center mb-6">請輸入英文名字猜猜看！</p>
+            
+            <div class="mb-6 relative">
+                <input type="text" id="guess-input" placeholder="Ex: John" 
+                       class="w-full border-2 border-slate-300 rounded-xl py-3 px-4 text-center text-xl font-bold text-slate-700 focus:outline-none focus:border-sky-400 focus:ring-4 focus:ring-sky-100 transition-all placeholder-slate-300"
+                       autocomplete="off">
+                <p id="error-msg" class="text-red-500 text-sm font-bold text-center mt-2 hidden animate-pulse">
+                    <i class="fas fa-times-circle mr-1"></i> 猜錯囉！再試試看？
+                </p>
+            </div>
+            
+            <div class="flex gap-3 justify-center">
+                <button onclick="giveUp()" class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-600 font-bold py-3 px-4 rounded-xl transition duration-200 text-sm">
+                    忍痛放棄
+                </button>
+                <button onclick="checkAnswer()" class="flex-1 bg-gradient-to-r from-sky-400 to-indigo-500 hover:from-sky-500 hover:to-indigo-600 text-white font-bold py-3 px-4 rounded-xl shadow-md transition duration-200 transform active:scale-95 text-sm">
+                    <i class="fas fa-check mr-1"></i> 確定
+                </button>
+            </div>
+
+            <!-- 關閉按鈕 -->
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-300 hover:text-slate-500 transition">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+    </div>
+
     <script>
         // ==========================================
-        // 🛠️ 資料設定區 (已更新 V3.2: 包含星座、日期、修復圖片)
+        // 資料設定區
         // ==========================================
         const birthdayStars = [
             {
@@ -207,88 +259,103 @@
             },
             {
                 id: 5,
-                clueImage: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-                clueText: "提示：\n愛讀書的文青代表",
-                realImage: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-                name: "Emily Wang",
-                department: "設計部",
+                clueImage: "./images/whoami05.png",
+                clueText: "提示：\n雖然不在仙境工作<br>但名字自帶奇幻魔法",
+                realImage: "./images/who05.jpg",
+                name: "Alice Shih",
+                department: "HR人力資源部門",
                 message: "願妳的生活如設計般精彩！🎨",
-                constellation: "♓", // 雙魚座
-                birthDate: "02/20"
+                constellation: "♑", // 摩羯座
+                birthDate: "01/15"
             },
             {
                 id: 6,
-                clueImage: "https://images.unsplash.com/photo-1517849845537-4d257902454a?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-                clueText: "提示：\n他是個超級狗奴",
-                realImage: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-                name: "Kevin Chang",
-                department: "產品部",
+                clueImage: "./images/whoami06.jpg",
+                clueText: "提示：\n是誰小時候綁雙馬尾就這麼無敵！",
+                realImage: "./images/who06.jpg",
+                name: "Harper Huang",
+                department: "SM台中社群媒體部門",
                 message: "天天遛狗，天天開心！🐶",
                 constellation: "♑",
-                birthDate: "01/10"
+                birthDate: "01/17"
             },
             {
                 id: 7,
-                clueImage: "https://images.unsplash.com/photo-1497935586351-b67a49e012bf?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-                clueText: "提示：\n沒有咖啡不能工作",
-                // [已修復] 圖片已更換為新的職場女性照片
-                realImage: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-                name: "Lisa Huang",
-                department: "會計部",
+                clueImage: "./images/whoami07.png",
+                clueText: "提示：\n與熊大、兔兔形影不離",
+                realImage: "./images/who07.jpg",
+                name: "Sally Seo",
+                department: "HR人力資源部門",
                 message: "祝妳財源滾滾來！☕",
-                constellation: "♒",
-                birthDate: "01/30"
+                constellation: "♓",
+                birthDate: "02/21"
             },
             {
                 id: 8,
-                clueImage: "https://images.unsplash.com/photo-1519834785169-98be25ec3f84?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-                clueText: "提示：\n週末都在山上的",
+                clueImage: "./images/whoami08.png",
+                clueText: "提示：\n無意間發現Dcard上的照片居然是我同事！",
                 realImage: "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-                name: "Mark Liu",
-                department: "研發部",
+                name: "Mollie Chen",
+                department: "SM台中社群媒體部門",
                 message: "永遠保持冒險的精神！⛰️",
-                constellation: "♒",
-                birthDate: "02/02"
+                constellation: "♑",
+                birthDate: "01/11"
             },
             {
                 id: 9,
                 clueImage: "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
                 clueText: "提示：\n健身房是第二個家",
-                realImage: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-                name: "Tina Tsai",
-                department: "客服部",
+                realImage: "./images/who09.jpg",
+                name: "Tris Chu",
+                department: "AM台中數位廣告部門",
                 message: "健康美麗，活力滿滿！💪",
                 constellation: "♒",
-                birthDate: "02/18"
+                birthDate: "02/16"
             },
             {
                 id: 10,
                 clueImage: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
                 clueText: "提示：\n辦公室的搖滾巨星",
-                realImage: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-                name: "Alex Chao",
-                department: "法務部",
+                realImage: "./images/who10.jpeg",
+                name: "Akane Lin",
+                department: "SM社群媒體部門",
                 message: "Rock n' Roll Forever! 🎸",
-                constellation: "♒",
-                birthDate: "01/25"
+                constellation: "♑",
+                birthDate: "01/18"
             },
             {
                 id: 11,
                 clueImage: "https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
                 clueText: "提示：\n這是誰的遊戲手把？",
-                realImage: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-                name: "Ryan Wu",
-                department: "IT部",
+                realImage: "./images/who11.png",
+                name: "Scott Chang",
+                department: "BS台中市場營運部門",
                 message: "等級無限升，裝備全神裝！🎮",
-                constellation: "♓",
-                birthDate: "02/28"
+                constellation: "♒",
+                birthDate: "02/06"
             }
         ];
 
         // ==========================================
-        // 🚀 程式邏輯區
+        // 程式邏輯區
         // ==========================================
         const container = document.getElementById('game-container');
+        const modal = document.getElementById('guess-modal');
+        const guessInput = document.getElementById('guess-input');
+        const errorMsg = document.getElementById('error-msg');
+        
+        // 用於記錄當前正在互動的卡片
+        let currentCardElement = null;
+        let currentCorrectAnswer = "";
+
+        // 新增：錯誤訊息設定區 (可在此修改 3 種輪播訊息)
+        const errorMessages = [
+            "照著提示想看看，加油！",
+            "母丟哦！再試試看？",
+            "你是不是跟同事很不熟？"
+        ];
+        // 記錄目前顯示到第幾則錯誤訊息
+        let errorMsgIndex = 0;
 
         function renderCards() {
             container.innerHTML = '';
@@ -298,9 +365,13 @@
 
                 const cardInner = document.createElement('div');
                 cardInner.className = 'flip-card-inner relative w-full h-full shadow-xl rounded-xl transition-all duration-500';
-                cardInner.onclick = function() { flipCard(this); };
+                
+                // V3.5: 將正確答案 (Name) 綁定在 data-answer 屬性上，方便比對
+                cardInner.setAttribute('data-answer', star.name);
+                
+                // V3.5: 綁定點擊事件
+                cardInner.onclick = function() { handleCardClick(this); };
 
-                // V3.0: 正面 - 標籤改為藍色系，背景微調
                 const cardFront = document.createElement('div');
                 cardFront.className = 'flip-card-front flex flex-col items-center bg-white';
                 cardFront.innerHTML = `
@@ -313,17 +384,15 @@
                         </div>
                     </div>
                     <div class="h-1/4 w-full flex flex-col justify-center items-center p-2 bg-white">
-                        <p class="font-bold text-slate-600 text-lg text-center whitespace-pre-line font-handwriting transform -rotate-2">${star.clueText}</p>
+                        <p class="font-bold text-slate-600 text-lg text-center whitespace-pre-line font-clue transform -rotate-2">${star.clueText}</p>
                     </div>
                 `;
 
-                // V3.3: 背面 - 木頭質感掛牌 (無黑點、位置微調)
                 const cardBack = document.createElement('div');
-                cardBack.className = 'flip-card-back p-4 relative'; // 確保 relative 以定位絕對元素
+                cardBack.className = 'flip-card-back p-4 relative'; 
                 cardBack.innerHTML = `
                     <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-sky-300 via-blue-400 to-indigo-400"></div>
                     
-                    <!-- 更新：木紋生日掛牌 (改為 top-3.5 約下移 2px) -->
                     <div class="wood-tag absolute top-3.5 right-3 px-3 py-1 rounded-md transform rotate-3 flex items-center gap-1 z-10">
                         <span class="text-xl leading-none text-amber-800" title="星座">${star.constellation || '★'}</span>
                         <span class="text-sm font-bold font-mono text-amber-900 tracking-tighter">${star.birthDate || '??/??'}</span>
@@ -353,16 +422,93 @@
             });
         }
 
-        function flipCard(element) {
-            const isFlipped = element.classList.contains('flipped');
-            if (!isFlipped) {
-                element.classList.add('flipped');
-                playConfetti(0.5);
-            } else {
+        // V3.5: 處理卡片點擊邏輯
+        function handleCardClick(element) {
+            // 如果已經翻開了，點擊則蓋回去 (保持原樣)
+            if (element.classList.contains('flipped')) {
                 element.classList.remove('flipped');
+                return;
+            }
+
+            // 如果還沒翻開，觸發猜謎彈窗
+            currentCardElement = element;
+            currentCorrectAnswer = element.getAttribute('data-answer'); // 獲取正確答案
+            openGuessModal();
+        }
+
+        // 開啟彈窗
+        function openGuessModal() {
+            modal.classList.remove('hidden');
+            guessInput.value = ''; // 清空輸入框
+            guessInput.focus();    // 自動聚焦
+            errorMsg.classList.add('hidden'); // 隱藏錯誤訊息
+        }
+
+        // 關閉彈窗
+        function closeModal() {
+            modal.classList.add('hidden');
+            currentCardElement = null; // 重置
+        }
+
+        // 檢查答案
+        function checkAnswer() {
+            const userGuess = guessInput.value.trim().toLowerCase();
+            const correctName = currentCorrectAnswer.toLowerCase();
+
+            // 邏輯：如果輸入不為空，且正確答案包含使用者輸入的字串 (例如輸入 John 也能對應 John Doe)
+            if (userGuess && correctName.includes(userGuess)) {
+                // 答對了！
+                flipCurrentCard(); // 先執行翻牌
+                closeModal();      // 再關閉視窗 (會清除 currentCardElement)
+                errorMsgIndex = 0; // (選用) 答對後可重置錯誤訊息順序，也可不重置
+            } else {
+                // 答錯了！
+                
+                // 更新錯誤訊息：取出陣列中對應的訊息，並更新 index
+                const msg = errorMessages[errorMsgIndex % errorMessages.length];
+                errorMsg.innerHTML = `<i class="fas fa-times-circle mr-1"></i> ${msg}`;
+                errorMsgIndex++; // 下次顯示下一句
+                
+                errorMsg.classList.remove('hidden');
+                // 搖晃輸入框提示錯誤
+                const inputContainer = document.querySelector('#guess-modal input');
+                inputContainer.classList.add('shake-animation');
+                setTimeout(() => inputContainer.classList.remove('shake-animation'), 300);
+                guessInput.value = ''; 
+                guessInput.focus();
             }
         }
 
+        // 放棄猜測
+        function giveUp() {
+            flipCurrentCard(); // 先執行翻牌
+            closeModal();      // 再關閉視窗
+        }
+
+        // 執行翻牌動作
+        function flipCurrentCard() {
+            if (currentCardElement) {
+                currentCardElement.classList.add('flipped');
+                // 嘗試播放特效，如果失敗也不影響翻牌
+                try {
+                    playConfetti(0.5); 
+                } catch(e) {
+                    console.log('Confetti failed but card flipped');
+                }
+                
+                // 修正：這裡不要把 currentCardElement 設為 null
+                // 讓 closeModal 來負責清理，確保在同一個執行週期內 element 還在
+            }
+        }
+
+        // 支援按 Enter 鍵送出答案
+        guessInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+
+        // 重置所有卡片
         function resetAllCards() {
             const cards = document.querySelectorAll('.flip-card-inner');
             cards.forEach(card => card.classList.remove('flipped'));
@@ -373,7 +519,6 @@
             var end = Date.now() + duration;
 
             (function frame() {
-                // V3.0: 調整拉炮顏色為冬日色系 (藍、白、銀)
                 confetti({
                     particleCount: 3,
                     angle: 60,
@@ -400,10 +545,16 @@
                 particleCount: 100,
                 spread: 70,
                 origin: { y: 0.6 },
-                // V3.0: 調整單次點擊的顏色
                 colors: ['#a1c4fd', '#c2e9fb', '#ffffff']
             });
         }
+
+        // =========================================
+        // V3.6 Security: 禁止右鍵選單 (JS部分)
+        // =========================================
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
 
         renderCards();
 
