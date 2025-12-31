@@ -36,6 +36,11 @@
 
         .flip-card-inner.flipped { transform: rotateY(180deg); }
 
+        /* V6.5.1 關鍵修正：強制隱藏翻轉後的便利貼，解決 Safari/iOS 3D 透視 Bug */
+        .flip-card-inner.flipped .sticky-note {
+            display: none;
+        }
+
         .flip-card-front, .flip-card-back {
             position: absolute;
             width: 100%;
@@ -487,7 +492,7 @@
 
                 if (totalChecked > 0 && (clearedCount / totalChecked) > 0.5) {
                     fogCanvas.classList.remove('fog-active');
-                    showHelper("呼～終於看清楚了！");
+                    showHelper("呼～終於看清楚了！(目前結冰等級: 3) 🐧");
                     
                     globalConsecutiveWrong = 3;
                     updateWeatherEffects();
@@ -731,9 +736,12 @@
             }
         }
 
+        // V6.4.5: 修正 giveUp 邏輯，避免重複產生便利貼
         function giveUp() {
             if (currentStarId) {
+                // 更新統計 (增加放棄次數)
                 updateStats(currentStarId, false);
+                // V6.4.5: 只更新稱號，不呼叫 refreshCardStatsDisplay 以避免重複貼便利貼
                 updateTitleDisplay();
             }
 
