@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
+    <!-- V6.6.0 更新: 移除版本號 -->
     <title>Asiapac 1、2月壽星慶生會</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Pacifico&family=Patrick+Hand&display=swap" rel="stylesheet">
@@ -36,7 +37,7 @@
 
         .flip-card-inner.flipped { transform: rotateY(180deg); }
 
-        /* V6.5.1 關鍵修正：強制隱藏翻轉後的便利貼，解決 Safari/iOS 3D 透視 Bug */
+        /* V6.5.1 修正: 強制隱藏翻轉後的便利貼，解決 Safari/iOS 3D 透視 Bug */
         .flip-card-inner.flipped .sticky-note {
             display: none;
         }
@@ -240,8 +241,13 @@
     </header>
 
     <!-- 遊戲卡片容器 -->
-    <div id="game-container" class="relative z-10 max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 pb-20">
+    <div id="game-container" class="relative z-10 max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 pb-4">
         <!-- 卡片將由 JavaScript 動態生成 -->
+    </div>
+
+    <!-- V6.6.1: 新增頁尾資訊 (由2026福委團隊以💗製作) -->
+    <div class="relative z-10 text-center text-slate-500 text-xs font-bold tracking-widest mt-8 mb-24 opacity-80 hover:opacity-100 transition-opacity">
+        由AsiapacTW 2026福委團隊以💗製作
     </div>
 
     <!-- 底部控制區 -->
@@ -389,7 +395,7 @@
             }
         }
 
-        // V6.5.0: 細化稱號級距
+        // V6.5.0: 細化稱號級距 (更新版)
         function calculateTitle(wins) {
              const totalStars = birthdayStars.length;
              const completionRate = wins / totalStars;
@@ -429,8 +435,10 @@
             }, 3500);
         }
 
+        // V6.6.0: 更新起霧邏輯 (Threshold 6, Opacity * 0.2)
         function updateWeatherEffects() {
             if (globalConsecutiveWrong > 0 && globalConsecutiveWrong < 6) {
+                // Opacity 加倍 (0.1 -> 0.2)
                 let opacity = Math.min(globalConsecutiveWrong * 0.2, 0.9);
                 frostOverlay.style.opacity = opacity;
                 
@@ -438,6 +446,7 @@
                      fogCanvas.classList.remove('fog-active');
                 }
             } else if (globalConsecutiveWrong >= 6) {
+                // Threshold 降低 (10 -> 6)
                 frostOverlay.style.opacity = 1;
                 if (!fogCanvas.classList.contains('fog-active')) {
                     fogCanvas.classList.add('fog-active');
@@ -492,8 +501,10 @@
 
                 if (totalChecked > 0 && (clearedCount / totalChecked) > 0.5) {
                     fogCanvas.classList.remove('fog-active');
+                    // V6.6.0: 移除括號內的 debug 文字
                     showHelper("呼～終於看清楚了！");
-
+                    
+                    // V6.6.0: 擦拭後退回 Level 1
                     globalConsecutiveWrong = 1;
                     updateWeatherEffects();
                 }
@@ -532,7 +543,7 @@
         function shareScore() {
             const allStats = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
             let totalWins = 0;
-            // V6.4.6: 移除 totalAttempted
+            
             birthdayStars.forEach(star => {
                 const stat = allStats[star.id];
                 if (stat && stat.wins > 0) {
@@ -736,15 +747,14 @@
             }
         }
 
-        // V6.4.5: 修正 giveUp 邏輯，避免重複產生便利貼
         function giveUp() {
             if (currentStarId) {
-                // 更新統計 (增加放棄次數)
+                // 更新統計
                 updateStats(currentStarId, false);
-                // V6.4.5: 只更新稱號，不呼叫 refreshCardStatsDisplay 以避免重複貼便利貼
                 updateTitleDisplay();
             }
 
+            // V6.4.5: 修正為只增加全域錯誤，不觸發便利貼
             globalConsecutiveWrong++;
             updateWeatherEffects();
             showHelper("放棄是為了走更長遠的路...嗎？🐧");
