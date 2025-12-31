@@ -430,14 +430,14 @@
         }
 
         function updateWeatherEffects() {
-            if (globalConsecutiveWrong > 0 && globalConsecutiveWrong < 10) {
-                let opacity = Math.min(globalConsecutiveWrong * 0.1, 0.9);
+            if (globalConsecutiveWrong > 0 && globalConsecutiveWrong < 6) {
+                let opacity = Math.min(globalConsecutiveWrong * 0.2, 0.9);
                 frostOverlay.style.opacity = opacity;
                 
                 if (fogCanvas.classList.contains('fog-active')) {
                      fogCanvas.classList.remove('fog-active');
                 }
-            } else if (globalConsecutiveWrong >= 10) {
+            } else if (globalConsecutiveWrong >= 6) {
                 frostOverlay.style.opacity = 1;
                 if (!fogCanvas.classList.contains('fog-active')) {
                     fogCanvas.classList.add('fog-active');
@@ -492,9 +492,9 @@
 
                 if (totalChecked > 0 && (clearedCount / totalChecked) > 0.5) {
                     fogCanvas.classList.remove('fog-active');
-                    showHelper("呼～終於看清楚了！(目前結冰等級: 3) 🐧");
-                    
-                    globalConsecutiveWrong = 3;
+                    showHelper("呼～終於看清楚了！");
+
+                    globalConsecutiveWrong = 1;
                     updateWeatherEffects();
                 }
             }
