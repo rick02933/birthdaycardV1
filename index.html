@@ -3,49 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- V3.4: 防止搜尋引擎索引此頁面 -->
     <meta name="robots" content="noindex, nofollow">
     <title>Asiapac 1、2月壽星慶生會</title>
-    <!-- 引入 Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- 引入 Google Fonts (新增 Patrick Hand 字體) -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Pacifico&family=Patrick+Hand&display=swap" rel="stylesheet">
-    <!-- 引入 Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- 引入 Canvas Confetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     
     <style>
         body {
             font-family: 'Noto Sans TC', sans-serif;
-            /* V3.0: 冬日冰雪漸層 */
             background: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
             overflow-x: hidden;
             color: #2d3748;
-
-            /* ========================================= */
-            /* V3.6 Security: 禁止選取文字 (CSS部分)      */
-            /* ========================================= */
-            -webkit-user-select: none; /* Safari */
-            -moz-user-select: none;    /* Firefox */
-            -ms-user-select: none;     /* IE 10+ */
-            user-select: none;         /* Standard syntax */
+            -webkit-user-select: none;
+            user-select: none;
         }
 
-        /* 標題用的華麗草寫 */
-        .font-handwriting {
-            font-family: 'Pacifico', cursive;
-        }
-
-        /* V3.5 優化：提示文字用的清晰手寫字體 */
-        .font-clue {
-            font-family: 'Patrick Hand', cursive;
-        }
-
-        /* 翻轉卡片的核心 CSS */
-        .perspective-1000 {
-            perspective: 1000px;
-        }
+        .font-handwriting { font-family: 'Pacifico', cursive; }
+        .font-clue { font-family: 'Patrick Hand', cursive; }
+        .perspective-1000 { perspective: 1000px; }
         
         .flip-card-inner {
             position: relative;
@@ -57,9 +34,7 @@
             cursor: pointer;
         }
 
-        .flip-card-inner.flipped {
-            transform: rotateY(180deg);
-        }
+        .flip-card-inner.flipped { transform: rotateY(180deg); }
 
         .flip-card-front, .flip-card-back {
             position: absolute;
@@ -76,6 +51,7 @@
             background-color: rgba(255, 255, 255, 0.95);
             color: black;
             border: 4px solid #fff;
+            overflow: hidden; 
         }
 
         .flip-card-back {
@@ -84,12 +60,97 @@
             transform: rotateY(180deg);
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: center; 
             align-items: center;
             border: 4px solid #a1c4fd;
         }
 
-        /* 背景漂浮裝飾 */
+        .sticky-note {
+            position: absolute;
+            background-color: #fef08a;
+            color: #854d0e;
+            padding: 4px 8px;
+            font-family: 'Patrick Hand', cursive;
+            font-weight: bold;
+            font-size: 0.9rem;
+            box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            transform: rotate(-5deg);
+            z-index: 20;
+            border-bottom-right-radius: 15px 5px;
+            max-width: 90%;
+            word-wrap: break-word;
+            pointer-events: none;
+            border: 1px solid #fde047;
+        }
+
+        /* 結冰效果 (Frost) */
+        .frost-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 90;
+            box-shadow: inset 0 0 150px 50px rgba(255, 255, 255, 0.95);
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        /* 起霧效果 (Fog Canvas) */
+        #fog-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 95;
+            cursor: pointer;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        #fog-canvas.fog-active {
+            pointer-events: auto;
+            opacity: 1;
+        }
+
+        /* AI 搗亂助手 */
+        #ai-helper {
+            position: fixed;
+            bottom: 80px;
+            right: -300px;
+            width: 250px;
+            z-index: 110;
+            transition: right 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            filter: drop-shadow(-5px 5px 10px rgba(0,0,0,0.2));
+        }
+        #ai-helper.show {
+            right: 20px;
+        }
+        .speech-bubble {
+            position: relative;
+            background: #fff;
+            border-radius: 15px;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: #333;
+            font-weight: bold;
+            border: 2px solid #cbd5e1;
+        }
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            right: 40px;
+            border-width: 10px 10px 0;
+            border-style: solid;
+            border-color: #cbd5e1 transparent;
+            display: block;
+            width: 0;
+        }
+
         .floating-bg {
             position: fixed;
             top: 0;
@@ -111,7 +172,6 @@
             100% { transform: translateY(110vh) rotate(360deg) translateX(20px); opacity: 0; }
         }
 
-        /* 木頭質感掛牌樣式 */
         .wood-tag {
             background-color: #e6c9a8;
             background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.3) 0px, transparent 1px, transparent 10px);
@@ -119,18 +179,15 @@
             box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
         }
 
-        /* V3.5: 錯誤提示的搖晃動畫 */
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             25% { transform: translateX(-5px); }
             75% { transform: translateX(5px); }
         }
-        .shake-animation {
-            animation: shake 0.3s ease-in-out;
-        }
+        .shake-animation { animation: shake 0.3s ease-in-out; }
     </style>
 </head>
-<body class="min-h-screen py-10 px-4">
+<body class="min-h-screen pt-10 pb-16 md:py-10 px-4">
 
     <!-- 背景漂浮裝飾 -->
     <div class="floating-bg">
@@ -142,8 +199,28 @@
         <i class="fas fa-star text-2xl floating-item" style="left: 90%; animation-duration: 22s; animation-delay: 10s;"></i>
     </div>
 
+    <!-- 結冰效果層 -->
+    <div id="frost-overlay" class="frost-overlay"></div>
+    <!-- 起霧畫布 (用於擦拭) -->
+    <canvas id="fog-canvas"></canvas>
+
+    <!-- AI 搗亂助手 -->
+    <div id="ai-helper">
+        <div class="speech-bubble" id="helper-msg">嗨！我是你的搗亂小幫手 🐧</div>
+        <div class="text-6xl text-right pr-4 transform hover:scale-110 transition cursor-pointer">🐧</div>
+    </div>
+
+    <!-- 左上角即時稱號徽章 -->
+    <div id="player-title-badge" class="fixed top-4 left-4 z-40 bg-white/80 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border-2 border-sky-200 flex items-center gap-3 transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-default">
+        <span id="current-title-icon" class="text-2xl">🌱</span>
+        <div class="flex flex-col leading-tight">
+           <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Current Rank</span>
+           <span id="current-title-text" class="text-sm md:text-base font-bold text-sky-700">新手村村民</span>
+        </div>
+    </div>
+
     <!-- 標題區 -->
-    <header class="text-center mb-16 relative z-10">
+    <header class="text-center relative z-10 mt-12 mb-4 md:mt-0 md:mb-16">
         <div class="inline-block bg-white/60 backdrop-blur-md px-10 py-8 rounded-3xl shadow-lg border border-white/80">
             <h1 class="text-4xl md:text-6xl font-bold text-gray-800 mb-10 drop-shadow-sm font-handwriting text-blue-500">
                 Happy Birthday!
@@ -163,19 +240,27 @@
     </div>
 
     <!-- 底部控制區 -->
-    <div class="fixed bottom-0 left-0 w-full bg-white/80 backdrop-blur-md p-4 shadow-[0_-5px_15px_rgba(0,0,0,0.1)] z-50 flex justify-center items-center gap-4 border-t border-white/50">
-        <button onclick="resetAllCards()" class="bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold py-2 px-6 rounded-full transition duration-300 border border-slate-300">
-            <i class="fas fa-redo-alt mr-2"></i> 再次挑戰？
+    <div class="fixed bottom-0 left-0 w-full bg-white/80 backdrop-blur-md p-4 shadow-[0_-5px_15px_rgba(0,0,0,0.1)] z-50 flex flex-wrap justify-center items-center gap-3 border-t border-white/50">
+        <button onclick="clearData()" class="bg-red-100 hover:bg-red-200 text-red-600 font-bold py-2 px-4 rounded-full transition duration-300 text-sm border border-red-200" title="清除所有猜題紀錄">
+            <i class="fas fa-trash-alt mr-1"></i> 重置紀錄
         </button>
+        
+        <button onclick="resetAllCards()" class="bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold py-2 px-4 rounded-full transition duration-300 text-sm border border-slate-300">
+            <i class="fas fa-redo-alt mr-1"></i> 全部蓋牌
+        </button>
+
+        <button onclick="shareScore()" class="bg-green-100 hover:bg-green-200 text-green-700 font-bold py-2 px-4 rounded-full transition duration-300 text-sm border border-green-200">
+            <i class="fas fa-share-alt mr-1"></i> 複製戰績
+        </button>
+
         <button onclick="celebrateNow()" class="bg-gradient-to-r from-sky-400 to-indigo-500 hover:from-sky-500 hover:to-indigo-600 text-white font-bold py-2 px-6 rounded-full shadow-lg transform hover:scale-105 transition duration-300 ring-2 ring-offset-2 ring-sky-200">
             <i class="fas fa-glass-cheers mr-2"></i> 一起慶祝！
         </button>
     </div>
 
-    <!-- V3.5: 猜謎互動視窗 (Modal) -->
+    <!-- 猜謎互動視窗 (Modal) -->
     <div id="guess-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] hidden flex justify-center items-center px-4">
         <div class="bg-white rounded-2xl p-6 md:p-8 max-w-sm w-full shadow-2xl border-4 border-sky-200 relative transform transition-all scale-100">
-            <!-- 裝飾 -->
             <div class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-sky-500 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg border-2 border-white text-xl">
                 <i class="fas fa-question"></i>
             </div>
@@ -201,7 +286,6 @@
                 </button>
             </div>
 
-            <!-- 關閉按鈕 -->
             <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-300 hover:text-slate-500 transition">
                 <i class="fas fa-times text-xl"></i>
             </button>
@@ -213,127 +297,17 @@
         // 資料設定區
         // ==========================================
         const birthdayStars = [
-            {
-                id: 1,
-                clueImage: "./images/whoami01.jpg", 
-                clueText: "提示：\n蒙娜ni莎",
-                realImage: "./images/who01.jpg",
-                name: "Nick Lin",
-                department: "AM數位廣告部門",
-                message: "祝你創意無限，天天開心！✨",
-                constellation: "♒", // 水瓶座
-                birthDate: "02/05"
-            },
-            {
-                id: 2,
-                clueImage: "./images/whoami02.jpg",
-                clueText: "提示：\n這是誰亂亂的桌面？",
-                realImage: "./images/who02.jpg",
-                name: "Ken Lee",
-                department: "AM數位廣告部門",
-                message: "Bug 退散，準時下班！🚀",
-                constellation: "♑", // 摩羯座
-                birthDate: "01/15"
-            },
-            {
-                id: 3,
-                clueImage: "./images/whoami03.jpg",
-                clueText: "提示：\n天使眼眸？魔鬼身材？",
-                realImage: "./images/who03.jpg",
-                name: "Amber Tsai",
-                department: "BS市場營運部門",
-                message: "謝謝妳總是照顧大家！🎂",
-                constellation: "♑", // 摩羯座
-                birthDate: "01/14"
-            },
-            {
-                id: 4,
-                clueImage: "./images/whoami04.jpg",
-                clueText: "提示：\n誰養了兩隻小橘貓",
-                realImage: "./images/who04.jpg",
-                name: "Kavass Chang",
-                department: "SM社群媒體部門",
-                message: "業績長紅，訂單接不完！💰",
-                constellation: "♒", // 水瓶座
-                birthDate: "01/22"
-            },
-            {
-                id: 5,
-                clueImage: "./images/whoami05.jpg",
-                clueText: "提示：\n雖然不在仙境工作<br>但名字自帶奇幻魔法",
-                realImage: "./images/who05.jpg",
-                name: "Alice Shih",
-                department: "HR人力資源部門",
-                message: "願妳的生活如設計般精彩！🎨",
-                constellation: "♑", // 摩羯座
-                birthDate: "01/15"
-            },
-            {
-                id: 6,
-                clueImage: "./images/whoami06.jpg",
-                clueText: "提示：\n是誰小時候綁雙馬尾就這麼無敵！",
-                realImage: "./images/who06.jpg",
-                name: "Harper Huang",
-                department: "SM台中社群媒體部門",
-                message: "天天遛狗，天天開心！🐶",
-                constellation: "♑",
-                birthDate: "01/17"
-            },
-            {
-                id: 7,
-                clueImage: "./images/whoami07.jpg",
-                clueText: "提示：\n與熊大、兔兔形影不離",
-                realImage: "./images/who07.jpg",
-                name: "Sally Seo",
-                department: "HR人力資源部門",
-                message: "祝妳財源滾滾來！☕",
-                constellation: "♓",
-                birthDate: "02/21"
-            },
-            {
-                id: 8,
-                clueImage: "./images/whoami08.jpg",
-                clueText: "提示：\n無意間發現Dcard上的照片居然是我同事！",
-                realImage: "./images/who08.jpg",
-                name: "Mollie Chen",
-                department: "SM台中社群媒體部門",
-                message: "永遠保持冒險的精神！⛰️",
-                constellation: "♑",
-                birthDate: "01/11"
-            },
-            {
-                id: 9,
-                clueImage: "./images/whoami09.jpg",
-                clueText: "提示：\n健身房是第二個家",
-                realImage: "./images/who09.jpg",
-                name: "Tris Chu",
-                department: "AM台中數位廣告部門",
-                message: "健康美麗，活力滿滿！💪",
-                constellation: "♒",
-                birthDate: "02/16"
-            },
-            {
-                id: 10,
-                clueImage: "./images/whoami10.jpg",
-                clueText: "提示：\n辦公室的搖滾巨星",
-                realImage: "./images/who10.jpg",
-                name: "Akane Lin",
-                department: "SM社群媒體部門",
-                message: "Rock n' Roll Forever! 🎸",
-                constellation: "♑",
-                birthDate: "01/18"
-            },
-            {
-                id: 11,
-                clueImage: "./images/whoami11.jpg",
-                clueText: "提示：\n這是哪位壽星的座位？",
-                realImage: "./images/who11.jpg",
-                name: "Scott Chang",
-                department: "BS台中市場營運部門",
-                message: "等級無限升，裝備全神裝！🎮",
-                constellation: "♒",
-                birthDate: "02/06"
-            }
+            { id: 1, clueImage: "./images/whoami01.jpg", clueText: "提示：\n蒙娜ni莎", realImage: "./images/who01.jpg", name: "Nick Lin", department: "AM數位廣告部門", message: "祝妳創意無限，天天開心！✨", constellation: "♒", birthDate: "02/05" },
+            { id: 2, clueImage: "./images/whoami02.jpg", clueText: "提示：\n這是誰亂亂的桌面？", realImage: "./images/who02.jpg", name: "Ken Lee", department: "AM數位廣告部門", message: "Bug 退散，準時下班！🚀", constellation: "♑", birthDate: "01/15" },
+            { id: 3, clueImage: "./images/whoami03.jpg", clueText: "提示：\n天使眼眸？魔鬼身材？", realImage: "./images/who03.jpg", name: "Amber Tsai", department: "BS市場營運部門", message: "謝謝妳總是照顧大家！🎂", constellation: "♑", birthDate: "01/14" },
+            { id: 4, clueImage: "./images/whoami04.jpg", clueText: "提示：\n誰養了兩隻小橘貓", realImage: "./images/who04.jpg", name: "Kavass Chang", department: "SM社群媒體部門", message: "業績長紅，訂單接不完！💰", constellation: "♒", birthDate: "01/22" },
+            { id: 5, clueImage: "./images/whoami05.jpg", clueText: "提示：\n雖然不在仙境工作<br>但名字自帶奇幻魔法", realImage: "./images/who05.jpg", name: "Alice Shih", department: "HR人力資源部門", message: "願妳的生活如設計般精彩！🎨", constellation: "♑", birthDate: "01/15" },
+            { id: 6, clueImage: "./images/whoami06.jpg", clueText: "提示：\n是誰小時候綁雙馬尾就這麼無敵！", realImage: "./images/who06.jpg", name: "Harper Huang", department: "SM台中社群媒體部門", message: "天天遛狗，天天開心！🐶", constellation: "♑", birthDate: "01/17" },
+            { id: 7, clueImage: "./images/whoami07.jpg", clueText: "提示：\n與熊大、兔兔形影不離", realImage: "./images/who07.jpg", name: "Sally Seo", department: "HR人力資源部門", message: "祝妳財源滾滾來！☕", constellation: "♓", birthDate: "02/21" },
+            { id: 8, clueImage: "./images/whoami08.jpg", clueText: "提示：\n無意間發現Dcard上的照片居然是我同事！", realImage: "./images/who08.jpg", name: "Mollie Chen", department: "SM台中社群媒體部門", message: "永遠保持冒險的精神！⛰️", constellation: "♑", birthDate: "01/11" },
+            { id: 9, clueImage: "./images/whoami09.jpg", clueText: "提示：\n健身房是第二個家", realImage: "./images/who09.jpg", name: "Tris Chu", department: "AM台中數位廣告部門", message: "健康美麗，活力滿滿！💪", constellation: "♒", birthDate: "02/16" },
+            { id: 10, clueImage: "./images/whoami10.jpg", clueText: "提示：\n辦公室的搖滾巨星", realImage: "./images/who10.jpg", name: "Akane Lin", department: "SM社群媒體部門", message: "Rock n' Roll Forever! 🎸", constellation: "♑", birthDate: "01/18" },
+            { id: 11, clueImage: "./images/whoami11.jpg", clueText: "提示：\n這是哪位壽星的座位？", realImage: "./images/who11.jpg", name: "Scott Chang", department: "BS台中市場營運部門", message: "等級無限升，裝備全神裝！🎮", constellation: "♒", birthDate: "02/06" },
         ];
 
         // ==========================================
@@ -344,18 +318,263 @@
         const guessInput = document.getElementById('guess-input');
         const errorMsg = document.getElementById('error-msg');
         
-        // 用於記錄當前正在互動的卡片
+        const titleIcon = document.getElementById('current-title-icon');
+        const titleText = document.getElementById('current-title-text');
+        const titleBadge = document.getElementById('player-title-badge');
+
+        const aiHelper = document.getElementById('ai-helper');
+        const helperMsg = document.getElementById('helper-msg');
+        const frostOverlay = document.getElementById('frost-overlay');
+        const fogCanvas = document.getElementById('fog-canvas');
+
         let currentCardElement = null;
         let currentCorrectAnswer = "";
+        let currentStarId = null;
 
-        // 新增：錯誤訊息設定區 (可在此修改 3 種輪播訊息)
+        let globalConsecutiveWrong = 0;
+
         const errorMessages = [
             "照著提示想看看，加油！",
             "母丟哦！再試試看？",
             "你是不是跟同事很不熟？"
         ];
-        // 記錄目前顯示到第幾則錯誤訊息
         let errorMsgIndex = 0;
+
+        const STORAGE_KEY = 'birthdayGame_stats_v2';
+
+        const annoyingPhrases = [
+            "需要幫忙嗎？但我也不認識他 🐧",
+            "你是不是只認識隔壁部門的？",
+            "這麼明顯還猜錯，我也幫不了你",
+            "要不要考慮去拿通訊錄來看？",
+            "便利貼越來越多了喔...",
+            "再錯下去螢幕要結冰囉 ❄️",
+            "加油好嗎？",
+            "我覺得螢幕好像變冷了..."
+        ];
+
+        function getStats(id) {
+            const allStats = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+            return allStats[id] || { wins: 0, losses: 0, wrongNames: [] };
+        }
+
+        function updateStats(id, isWin, wrongName = null) {
+            const allStats = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+            if (!allStats[id]) {
+                allStats[id] = { wins: 0, losses: 0, wrongNames: [] };
+            }
+            if (isWin) {
+                allStats[id].wins += 1;
+            } else {
+                allStats[id].losses += 1;
+            }
+            if (wrongName && !allStats[id].wrongNames.includes(wrongName)) {
+                allStats[id].wrongNames.push(wrongName);
+            }
+
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(allStats));
+            return allStats[id];
+        }
+
+        function clearData() {
+            if (confirm("確定要重置所有紀錄嗎？(便利貼與戰績將歸零)")) {
+                localStorage.removeItem(STORAGE_KEY);
+                alert("紀錄已重置！頁面將重新整理。");
+                location.reload();
+            }
+        }
+
+        // V6.5.0: 細化稱號級距
+        function calculateTitle(wins) {
+             const totalStars = birthdayStars.length;
+             const completionRate = wins / totalStars;
+
+             if (wins === 0) return { text: "新手村村民", icon: "🌱" };
+             if (completionRate === 1) return { text: "Asiapac 人類學家", icon: "👑" };
+             if (completionRate >= 0.8) return { text: "社交達人", icon: "🏆" };
+             if (completionRate >= 0.6) return { text: "職場觀察員", icon: "🔍" };
+             if (completionRate >= 0.4) return { text: "茶水間常客", icon: "☕" };
+             if (completionRate >= 0.2) return { text: "最熟悉的陌生人", icon: "🤔" };
+             
+             return { text: "努力認識大家中", icon: "💪" };
+        }
+
+        function updateTitleDisplay() {
+            const allStats = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+            let totalWins = 0;
+            
+            birthdayStars.forEach(star => {
+                const stat = allStats[star.id];
+                if (stat && stat.wins > 0) {
+                    totalWins++;
+                }
+            });
+            const titleData = calculateTitle(totalWins);
+            titleIcon.textContent = titleData.icon;
+            titleText.textContent = titleData.text;
+            titleBadge.classList.add('scale-110');
+            setTimeout(() => titleBadge.classList.remove('scale-110'), 200);
+        }
+
+        function showHelper(text) {
+            helperMsg.innerText = text;
+            aiHelper.classList.add('show');
+            setTimeout(() => {
+                aiHelper.classList.remove('show');
+            }, 3500);
+        }
+
+        function updateWeatherEffects() {
+            if (globalConsecutiveWrong > 0 && globalConsecutiveWrong < 10) {
+                let opacity = Math.min(globalConsecutiveWrong * 0.1, 0.9);
+                frostOverlay.style.opacity = opacity;
+                
+                if (fogCanvas.classList.contains('fog-active')) {
+                     fogCanvas.classList.remove('fog-active');
+                }
+            } else if (globalConsecutiveWrong >= 10) {
+                frostOverlay.style.opacity = 1;
+                if (!fogCanvas.classList.contains('fog-active')) {
+                    fogCanvas.classList.add('fog-active');
+                    initFog(); 
+                }
+            } else {
+                frostOverlay.style.opacity = 0;
+                fogCanvas.classList.remove('fog-active');
+            }
+        }
+
+        function initFog() {
+            const ctx = fogCanvas.getContext('2d');
+            fogCanvas.width = window.innerWidth;
+            fogCanvas.height = window.innerHeight;
+            
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+            ctx.fillRect(0, 0, fogCanvas.width, fogCanvas.height);
+            
+            ctx.fillStyle = '#64748b';
+            ctx.font = 'bold 30px Noto Sans TC';
+            ctx.textAlign = 'center';
+            ctx.fillText("好冷啊... 螢幕結冰了！", fogCanvas.width/2, fogCanvas.height/2 - 20);
+            ctx.font = '20px Noto Sans TC';
+            ctx.fillText("(快用力把冰霜擦掉)", fogCanvas.width/2, fogCanvas.height/2 + 20);
+
+            let isDrawing = false;
+            
+            function wipe(x, y) {
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.beginPath();
+                ctx.arc(x, y, 100, 0, Math.PI * 2); 
+                ctx.fill();
+            }
+
+            function checkClear() {
+                const w = fogCanvas.width;
+                const h = fogCanvas.height;
+                const imageData = ctx.getImageData(0, 0, w, h);
+                const data = imageData.data;
+                const sampleRate = 100; 
+                
+                let clearedCount = 0;
+                let totalChecked = 0;
+
+                for (let i = 3; i < data.length; i += 4 * sampleRate) {
+                    totalChecked++;
+                    if (data[i] < 128) { 
+                        clearedCount++;
+                    }
+                }
+
+                if (totalChecked > 0 && (clearedCount / totalChecked) > 0.5) {
+                    fogCanvas.classList.remove('fog-active');
+                    showHelper("呼～終於看清楚了！");
+                    
+                    globalConsecutiveWrong = 3;
+                    updateWeatherEffects();
+                }
+            }
+
+            fogCanvas.addEventListener('mousedown', () => isDrawing = true);
+            fogCanvas.addEventListener('mouseup', () => {
+                isDrawing = false;
+                checkClear(); 
+            });
+            fogCanvas.addEventListener('mousemove', (e) => {
+                if (isDrawing || e.buttons === 1) { 
+                    wipe(e.clientX, e.clientY);
+                }
+            });
+            
+            fogCanvas.addEventListener('touchstart', () => isDrawing = true);
+            fogCanvas.addEventListener('touchend', () => {
+                isDrawing = false;
+                checkClear();
+            });
+            fogCanvas.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                const touch = e.touches[0];
+                wipe(touch.clientX, touch.clientY);
+            });
+        }
+        
+        window.addEventListener('resize', () => {
+            if (fogCanvas.classList.contains('fog-active')) {
+                initFog();
+            }
+        });
+
+
+        function shareScore() {
+            const allStats = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+            let totalWins = 0;
+            // V6.4.6: 移除 totalAttempted
+            birthdayStars.forEach(star => {
+                const stat = allStats[star.id];
+                if (stat && stat.wins > 0) {
+                    totalWins++;
+                }
+            });
+            const titleData = calculateTitle(totalWins);
+            const shareText = `【Asiapac 壽星猜謎挑戰】\n我猜出了 ${totalWins} / ${birthdayStars.length} 位壽星！\n獲得稱號：${titleData.text} ${titleData.icon}\n快來挑戰看看你認得幾位同事！❄️🎂`;
+            
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(shareText).then(() => {
+                    alert("戰績已複製！快去群組貼上吧！📋");
+                }).catch(() => fallbackCopyTextToClipboard(shareText));
+            } else {
+                fallbackCopyTextToClipboard(shareText);
+            }
+        }
+
+        function fallbackCopyTextToClipboard(text) {
+            var textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";  
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                var successful = document.execCommand('copy');
+                alert("戰績已複製！快去群組貼上吧！📋");
+            } catch (err) {
+                alert("複製失敗，請手動截圖分享 😭");
+            }
+            document.body.removeChild(textArea);
+        }
+
+        function generateStickyNotesHTML(wrongNames) {
+            if (!wrongNames || wrongNames.length === 0) return '';
+            
+            return wrongNames.map((name, index) => {
+                const top = 10 + (Math.random() * 60); 
+                const left = 5 + (Math.random() * 60); 
+                const rotate = -10 + (Math.random() * 20); 
+                const color = index % 2 === 0 ? '#fef08a' : '#fbcfe8'; 
+                const style = `top: ${top}%; left: ${left}%; transform: rotate(${rotate}deg); background-color: ${color};`;
+                
+                return `<div class="sticky-note" style="${style}">Not ${name}!</div>`;
+            }).join('');
+        }
 
         function renderCards() {
             container.innerHTML = '';
@@ -366,22 +585,24 @@
                 const cardInner = document.createElement('div');
                 cardInner.className = 'flip-card-inner relative w-full h-full shadow-xl rounded-xl transition-all duration-500';
                 
-                // V3.5: 將正確答案 (Name) 綁定在 data-answer 屬性上，方便比對
                 cardInner.setAttribute('data-answer', star.name);
-                
-                // V3.5: 綁定點擊事件
+                cardInner.setAttribute('data-id', star.id);
                 cardInner.onclick = function() { handleCardClick(this); };
+
+                const stats = getStats(star.id);
+                const stickyNotesHTML = generateStickyNotesHTML(stats.wrongNames);
 
                 const cardFront = document.createElement('div');
                 cardFront.className = 'flip-card-front flex flex-col items-center bg-white';
                 cardFront.innerHTML = `
-                    <div class="h-3/4 w-full p-3 pb-0">
+                    <div class="h-3/4 w-full p-3 pb-0 relative">
                         <div class="w-full h-full overflow-hidden rounded-t-lg bg-slate-50 relative border border-slate-100">
                             <img src="${star.clueImage}" alt="Clue" class="w-full h-full object-cover transition duration-300 group-hover:scale-110 group-hover:rotate-1">
                             <div class="absolute top-2 right-2 bg-sky-400 text-white text-xs font-bold px-2 py-1 rounded-full shadow-md">
                                 <i class="fas fa-search"></i> Clue
                             </div>
                         </div>
+                        ${stickyNotesHTML}
                     </div>
                     <div class="h-1/4 w-full flex flex-col justify-center items-center p-2 bg-white">
                         <p class="font-bold text-slate-600 text-lg text-center whitespace-pre-line font-clue transform -rotate-2">${star.clueText}</p>
@@ -399,7 +620,7 @@
                     </div>
 
                     <div class="w-28 h-28 rounded-full overflow-hidden border-4 border-white shadow-lg mb-3 ring-2 ring-sky-200 mt-2">
-                        <img src="${star.realImage}" alt="${star.name}" class="w-full h-full object-cover">
+                        <img src="${star.realImage}" alt="${star.name}" id="img-${star.id}" class="w-full h-full object-cover">
                     </div>
                     <h2 class="text-2xl font-bold text-slate-800 mb-0">${star.name}</h2>
                     <span class="text-slate-500 text-sm mb-2">${star.department}</span>
@@ -422,55 +643,86 @@
             });
         }
 
-        // V3.5: 處理卡片點擊邏輯
         function handleCardClick(element) {
-            // 如果已經翻開了，點擊則蓋回去 (保持原樣)
             if (element.classList.contains('flipped')) {
                 element.classList.remove('flipped');
                 return;
             }
-
-            // 如果還沒翻開，觸發猜謎彈窗
             currentCardElement = element;
-            currentCorrectAnswer = element.getAttribute('data-answer'); // 獲取正確答案
+            currentCorrectAnswer = element.getAttribute('data-answer');
+            currentStarId = element.getAttribute('data-id'); 
             openGuessModal();
         }
 
-        // 開啟彈窗
         function openGuessModal() {
             modal.classList.remove('hidden');
-            guessInput.value = ''; // 清空輸入框
-            guessInput.focus();    // 自動聚焦
-            errorMsg.classList.add('hidden'); // 隱藏錯誤訊息
+            guessInput.value = ''; 
+            guessInput.focus();    
+            errorMsg.classList.add('hidden'); 
         }
 
-        // 關閉彈窗
         function closeModal() {
             modal.classList.add('hidden');
-            currentCardElement = null; // 重置
+            currentCardElement = null;
+            currentStarId = null; 
         }
 
-        // 檢查答案
+        function refreshCardStatsDisplay(id, newStats) {
+            if (newStats.wrongNames.length > 0) {
+                const cardFrontContainer = currentCardElement.querySelector('.flip-card-front .relative');
+                const lastWrongName = newStats.wrongNames[newStats.wrongNames.length - 1];
+                
+                const top = 10 + (Math.random() * 60); 
+                const left = 5 + (Math.random() * 60); 
+                const rotate = -10 + (Math.random() * 20); 
+                const color = newStats.wrongNames.length % 2 === 0 ? '#fef08a' : '#fbcfe8';
+                
+                const note = document.createElement('div');
+                note.className = 'sticky-note';
+                note.style.cssText = `top: ${top}%; left: ${left}%; transform: rotate(${rotate}deg); background-color: ${color};`;
+                note.innerText = `Not ${lastWrongName}!`;
+                
+                cardFrontContainer.appendChild(note);
+            }
+
+            updateTitleDisplay();
+        }
+
         function checkAnswer() {
             const userGuess = guessInput.value.trim().toLowerCase();
             const correctName = currentCorrectAnswer.toLowerCase();
 
-            // 邏輯：如果輸入不為空，且正確答案包含使用者輸入的字串 (例如輸入 John 也能對應 John Doe)
             if (userGuess && correctName.includes(userGuess)) {
-                // 答對了！
-                flipCurrentCard(); // 先執行翻牌
-                closeModal();      // 再關閉視窗 (會清除 currentCardElement)
-                errorMsgIndex = 0; // (選用) 答對後可重置錯誤訊息順序，也可不重置
+                if (currentStarId) {
+                    const newStats = updateStats(currentStarId, true);
+                    refreshCardStatsDisplay(currentStarId, newStats);
+                }
+
+                globalConsecutiveWrong = 0;
+                updateWeatherEffects();
+
+                flipCurrentCard(); 
+                closeModal();      
+                errorMsgIndex = 0; 
             } else {
-                // 答錯了！
-                
-                // 更新錯誤訊息：取出陣列中對應的訊息，並更新 index
                 const msg = errorMessages[errorMsgIndex % errorMessages.length];
                 errorMsg.innerHTML = `<i class="fas fa-times-circle mr-1"></i> ${msg}`;
-                errorMsgIndex++; // 下次顯示下一句
+                errorMsgIndex++; 
                 
+                if (userGuess && currentStarId) {
+                    const newStats = updateStats(currentStarId, false, guessInput.value.trim()); 
+                    refreshCardStatsDisplay(currentStarId, newStats);
+                } else if (currentStarId) {
+                    updateStats(currentStarId, false);
+                }
+
+                globalConsecutiveWrong++;
+                updateWeatherEffects();
+
+                const randomPhrase = annoyingPhrases[Math.floor(Math.random() * annoyingPhrases.length)];
+                showHelper(randomPhrase);
+
                 errorMsg.classList.remove('hidden');
-                // 搖晃輸入框提示錯誤
                 const inputContainer = document.querySelector('#guess-modal input');
                 inputContainer.classList.add('shake-animation');
                 setTimeout(() => inputContainer.classList.remove('shake-animation'), 300);
@@ -479,36 +731,37 @@
             }
         }
 
-        // 放棄猜測
         function giveUp() {
-            flipCurrentCard(); // 先執行翻牌
-            closeModal();      // 再關閉視窗
+            if (currentStarId) {
+                updateStats(currentStarId, false);
+                updateTitleDisplay();
+            }
+
+            globalConsecutiveWrong++;
+            updateWeatherEffects();
+            showHelper("放棄是為了走更長遠的路...嗎？🐧");
+
+            flipCurrentCard(); 
+            closeModal();      
         }
 
-        // 執行翻牌動作
         function flipCurrentCard() {
             if (currentCardElement) {
                 currentCardElement.classList.add('flipped');
-                // 嘗試播放特效，如果失敗也不影響翻牌
                 try {
                     playConfetti(0.5); 
                 } catch(e) {
                     console.log('Confetti failed but card flipped');
                 }
-                
-                // 修正：這裡不要把 currentCardElement 設為 null
-                // 讓 closeModal 來負責清理，確保在同一個執行週期內 element 還在
             }
         }
 
-        // 支援按 Enter 鍵送出答案
         guessInput.addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 checkAnswer();
             }
         });
 
-        // 重置所有卡片
         function resetAllCards() {
             const cards = document.querySelectorAll('.flip-card-inner');
             cards.forEach(card => card.classList.remove('flipped'));
@@ -549,9 +802,6 @@
             });
         }
 
-        // =========================================
-        // V3.6 Security: 禁止右鍵選單 (JS部分)
-        // =========================================
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
         });
@@ -559,6 +809,7 @@
         renderCards();
 
         window.addEventListener('load', () => {
+            updateTitleDisplay(); 
             setTimeout(() => {
                playConfetti(1);
             }, 500);
